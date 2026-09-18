@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Banca personal | NovaBank</title><link rel="stylesheet" href="/css/estilos.css"></head>
+<body><div class="wrap wide">
+<header><span class="tag">NOVABANK</span><nav><a href="#perfil">Mi perfil</a><a href="/logout">Salir</a></nav></header>
+<h1 th:text="'Hola, ' + ${cliente.nombre}">Hola</h1>
+<p class="subtitle">Bienvenido a tu banca personal. Aquí puedes consultar tu cuenta y realizar operaciones.</p>
+<div class="grid">
+<section class="card"><h3>Saldo disponible</h3><div class="balance" th:text="${totalSaldo}">0.00</div><p>Pesos colombianos · Cuenta activa</p></section>
+<section class="card"><h3>Operación bancaria</h3><form method="post" action="/operacion"><select name="numeroCuenta" required><option value="">Selecciona tu cuenta</option><option th:each="c:${cuentas}" th:value="${c.numeroCuenta}" th:text="${c.numeroCuenta + ' · ' + c.tipo}" ></option></select><input name="cantidad" type="number" min="1" step="0.01" placeholder="Cantidad" required><select name="accion"><option value="depositar">Depositar</option><option value="retirar">Retirar</option></select><button class="btn">Confirmar operación</button></form><p class="success" th:if="${mensaje}" th:text="${mensaje}"></p></section>
+</div>
+<section class="card"><div class="section-title"><h3>Mi cuenta bancaria</h3><span class="badge">Una cuenta por cliente</span></div><table><tr><th>Número</th><th>Tipo</th><th>Saldo</th><th>Estado</th></tr><tr th:each="c:${cuentas}"><td th:text="${c.numeroCuenta}"></td><td th:text="${c.tipo}"></td><td th:text="${#numbers.formatDecimal(c.saldo,1,2)}"></td><td><span class="badge" th:text="${c.activa ? 'Activa' : 'Bloqueada'}"></span></td></tr></table></section>
+<section class="card" id="perfil"><h3>Mi perfil</h3><form method="post" action="/perfil" class="two-col"><input name="nombre" th:value="${cliente.nombre}" placeholder="Nombre completo" required><input name="telefono" th:value="${cliente.telefono}" placeholder="Teléfono" required><input th:value="${cliente.correo}" disabled><input th:value="${cliente.documento}" disabled><button class="btn">Actualizar datos</button></form></section>
+</div></body></html>

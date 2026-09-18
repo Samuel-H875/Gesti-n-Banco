@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Cuentas</title>
+    <link rel="stylesheet" href="/css/estilos.css" />
+  </head>
+  <body>
+    <div class="contenedor">
+      <h1>Cuentas bancarias</h1>
+      <table>
+        <tr>
+          <th>Número</th>
+          <th>Cliente</th>
+          <th>Tipo</th>
+          <th>Saldo</th>
+        </tr>
+        <tr th:each="c:${cuentas}">
+          <td th:text="${c.numeroCuenta}"></td>
+          <td th:text="${c.numeroCliente}"></td>
+          <td th:text="${c.tipo}"></td>
+          <td th:text="${c.saldo}"></td>
+        </tr>
+      </table>
+      <a href="/">Volver</a>
+    </div>
+  </body>
+</html>

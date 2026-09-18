@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Crear cuenta</title>
+    <link rel="stylesheet" href="/css/estilos.css">
+</head>
+
+<body>
+
+<div class="contenedor">
+
+    <header>
+        <h1>Crear cuenta bancaria</h1>
+    </header>
+
+    <form action="/crear-cuenta" method="post" class="formulario">
+
+        <label>Seleccionar cliente</label>
+
+        <select name="numeroCliente" required>
+
+            <option value="">Seleccione un cliente</option>
+
+            <option
+                th:each="cliente : ${clientes}"
+                th:value="${cliente.numeroCliente}"
+                th:text="${cliente.nombre + ' - ' + cliente.numeroCliente}">
+            </option>
+
+        </select>
+
+        <label>Tipo de cuenta</label>
+
+        <select name="tipo" required>
+
+            <option value="Ahorros">Ahorros</option>
+            <option value="Corriente">Corriente</option>
+
+        </select>
+
+        <button type="submit">
+            Crear cuenta
+        </button>
+
+    </form>
+
+    <a href="/" class="volver">
+        Volver al inicio
+    </a>
+
+</div>
+
+</body>
+</html>
