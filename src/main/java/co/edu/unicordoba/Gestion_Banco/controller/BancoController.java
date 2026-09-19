@@ -63,7 +63,11 @@ public class BancoController {
         m.addAttribute("cliente", cliente);
         var cuentasCliente = cuentas.findByNumeroCliente(cliente.getNumeroCliente());
         m.addAttribute("cuentas", cuentasCliente);
-        m.addAttribute("totalSaldo", cuentasCliente.stream().mapToDouble(CuentaBancaria::getSaldo).sum());
+        double totalSaldo = 0;
+        for (CuentaBancaria cuenta : cuentasCliente) {
+            if (cuenta != null) totalSaldo += cuenta.getSaldo();
+        }
+        m.addAttribute("totalSaldo", totalSaldo);
         return "panel";
     }
 
