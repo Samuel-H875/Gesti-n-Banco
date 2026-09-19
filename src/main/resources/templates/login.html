@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Acceso | NovaBank</title>
+    <link rel="stylesheet" href="/css/estilos.css" />
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="card">
+        <span class="tag">NOVABANK</span>
+        <h2>Bienvenido</h2>
+        <p>Accede a tu banca digital.</p>
+        <div class="error" th:if="${error}" th:text="${error}"></div>
+        <div class="success" th:if="${mensaje}" th:text="${mensaje}"></div>
+        <form method="post" action="/login">
+          <input
+            name="correo"
+            type="email"
+            placeholder="Correo electrónico"
+            required
+          /><input
+            name="password"
+            type="password"
+            placeholder="Contraseña"
+            required
+          /><button class="btn">Entrar</button>
+        </form>
+        <p>¿No tienes cuenta? <a href="/registro">Regístrate</a></p>
+        <small>Demo admin: admin@banco.com / Admin123*</small>
+      </div>
+    </div>
+  </body>
+</html>

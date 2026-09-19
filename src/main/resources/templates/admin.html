@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Administración | NovaBank</title>
+    <link rel="stylesheet" href="/css/estilos.css" />
+  </head>
+  <body>
+    <div class="wrap wide">
+      <header>
+        <span class="tag">NOVABANK · ADMIN</span><a href="/logout">Salir</a>
+      </header>
+      <h1>Panel administrativo</h1>
+      <p class="subtitle">Gestión de clientes, cuentas y personal del banco.</p>
+      <section class="grid">
+        <div class="card">
+          <h3>Clientes registrados</h3>
+          <div class="stat" th:text="${#lists.size(clientes)}">0</div>
+        </div>
+        <div class="card">
+          <h3>Cuentas creadas</h3>
+          <div class="stat" th:text="${#lists.size(cuentas)}">0</div>
+        </div>
+        <div class="card">
+          <h3>Empleados</h3>
+          <div class="stat" th:text="${#lists.size(empleados)}">0</div>
+        </div>
+      </section>
+      
+      <section class="card">
+        <h3>Clientes</h3>
+        <div class="table-scroll">
+          <table>
+            <tr>
+              <th>Cliente</th>
+              <th>Documento</th>
+              <th>Correo</th>
+              <th>Editar</th>
+            </tr>
+            <tr th:each="c:${clientes}">
+              <td th:text="${c.nombre}"></td>
+              <td th:text="${c.documento}"></td>
+              <td th:text="${c.correo}"></td>
+              <td>
+                <details>
+                  <summary>Modificar</summary>
+                  <form method="post" action="/admin/cliente/editar">
+                    <input
+                      type="hidden"
+                      name="numeroCliente"
+                      th:value="${c.numeroCliente}"
+                    /><input
+                      name="nombre"
+                      th:value="${c.nombre}"
+                      required
+                    /><input
+                      name="correo"
+                      type="email"
+                      th:value="${c.correo}"
+                      required
+                    /><input
+                      name="telefono"
+                      th:value="${c.telefono}"
+                      required
+                    /><button class="btn">Guardar</button>
+                  </form>
+                </details>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </section>
+      <section class="card">
+        <h3>Cuentas</h3>
+        <div class="table-scroll">
+          <table>
+            <tr>
+              <th>Número</th>
+              <th>Cliente</th>
+              <th>Saldo</th>
+              <th>Gestión</th>
+            </tr>
+            <tr th:each="c:${cuentas}">
+              <td th:text="${c.numeroCuenta}"></td>
+              <td th:text="${c.numeroCliente}"></td>
+              <td th:text="${c.saldo}"></td>
+              <td>
+                <details>
+                  <summary>Gestionar</summary>
+                  <form method="post" action="/admin/cuenta/editar">
+                    <input
+                      type="hidden"
+                      name="numeroCuenta"
+                      th:value="${c.numeroCuenta}"
+                    /><select name="tipo">
+                      <option th:selected="${c.tipo == 'Ahorros'}">
+                        Ahorros
+                      </option>
+                      <option th:selected="${c.tipo == 'Corriente'}">
+                        Corriente
+                      </option></select
+                    ><label
+                      ><input
+                        type="checkbox"
+                        name="activa"
+                        value="true"
+                        th:checked="${c.activa}"
+                      />
+                      Cuenta activa</label
+                    ><button class="btn">Guardar</button>
+                  </form>
+                  <form
+                    method="post"
+                    action="/admin/cuenta/eliminar"
+                    onsubmit="return confirm('¿Eliminar esta cuenta?');"
+                  >
+                    <input
+                      type="hidden"
+                      name="numeroCuenta"
+                      th:value="${c.numeroCuenta}"
+                    /><button class="btn danger">Eliminar cuenta</button>
+                  </form>
+                </details>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </section>
+      <section class="card">
+        <h3>Empleos disponibles</h3>
+        <p class="subtitle">Crea, edita o elimina cargos y sus salarios. Los salarios se asignan al registrar empleados.</p>
+        <form method="post" action="/admin/empleo" class="two-col">
+          <input name="nombre" placeholder="Nombre del empleo" required />
+          <input name="salario" type="number" min="0" step="0.01" placeholder="Salario" required />
+          <button class="btn">Crear empleo</button>
+        </form>
+        <div class="table-scroll">
+          <table>
+            <tr><th>Empleo</th><th>Salario</th><th>Gestión</th></tr>
+            <tr th:each="p:${empleos}">
+              <td th:text="${p.nombre}"></td>
+              <td th:text="${p.salario}"></td>
+              <td>
+                <details>
+                  <summary>Modificar</summary>
+                  <form method="post" action="/admin/empleo/editar">
+                    <input type="hidden" name="nombreAnterior" th:value="${p.nombre}" />
+                    <input name="nombre" th:value="${p.nombre}" required />
+                    <input name="salario" type="number" min="0" step="0.01" th:value="${p.salario}" required />
+                    <button class="btn">Guardar cambios</button>
+                  </form>
+                  <form method="post" action="/admin/empleo/eliminar"
+                        onsubmit="return confirm('¿Eliminar este empleo?');">
+                    <input type="hidden" name="nombre" th:value="${p.nombre}" />
+                    <button class="btn danger">Eliminar empleo</button>
+                  </form>
+                </details>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </section>
+
+      <section class="card">
+        <h3>Registrar empleado</h3>
+        <form method="post" action="/admin/empleado" class="two-col">
+          <input name="nombre" placeholder="Nombre completo" required />
+          <input name="documento" placeholder="Documento" required />
+          <input name="correo" type="email" placeholder="Correo" required />
+          <select name="cargo" required>
+            <option value="">Seleccionar empleo</option>
+            <option th:each="p:${empleos}" th:value="${p.nombre}" th:text="${p.nombre + ' — $' + p.salario}"></option>
+          </select>
+          <button class="btn">Agregar empleado</button>
+        </form>
+      </section>
+
+      <section class="card">
+        <h3>Empleados registrados</h3>
+        <div class="table-scroll">
+          <table>
+            <tr><th>Nombre</th><th>Documento</th><th>Correo</th><th>Cargo</th><th>Salario</th><th>Acción</th></tr>
+            <tr th:each="e:${empleados}">
+              <td th:text="${e.nombre}"></td>
+              <td th:text="${e.documento}"></td>
+              <td th:text="${e.correo}"></td>
+              <td th:text="${e.cargo}"></td>
+              <td th:text="${e.salario}"></td>
+              <td>
+                <form method="post" action="/admin/empleado/eliminar">
+                  <input type="hidden" name="documento" th:value="${e.documento}" />
+                  <button class="btn danger">Eliminar</button>
+                </form>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </section>
+    </div>
+  </body>
+</html>

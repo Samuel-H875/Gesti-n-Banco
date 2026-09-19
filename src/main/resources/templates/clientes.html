@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clientes</title>
+    <link rel="stylesheet" href="/css/estilos.css">
+</head>
+<body>
+<div class="contenedor">
+    <header>
+        <h1>Clientes registrados</h1>
+    </header>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Número</th>
+            <th>Nombre</th>
+            <th>Documento</th>
+            <th>Correo</th>
+            <th>Teléfono</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="cliente : ${clientes}">
+            <td th:text="${cliente.numeroCliente}"></td>
+            <td th:text="${cliente.nombre}"></td>
+            <td th:text="${cliente.documento}"></td>
+            <td th:text="${cliente.correo}"></td>
+            <td th:text="${cliente.telefono}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <a href="/" class="volver">Volver al inicio</a>
+</div>
+</body>
+</html>
