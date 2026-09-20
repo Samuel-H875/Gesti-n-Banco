@@ -1,6 +1,28 @@
-# Gestión Banco — NovaBank
+# NovaBank — Gestión de Banco
 
-Aplicación web bancaria desarrollada con **Java, Spring Boot y Thymeleaf** como proyecto académico para el parcial del corte.
+Aplicación web académica desarrollada con **Java 21, Spring Boot, Spring MVC y Thymeleaf**. El sistema simula la gestión básica de clientes, cuentas bancarias, operaciones de depósito/retiro y administración de empleados y cargos.
+
+## Funcionalidades
+
+### Cliente
+
+- Registro de cliente.
+- Creación automática de una cuenta de ahorros inicial con saldo `0`.
+- Inicio de sesión mediante correo y contraseña.
+- Consulta de datos personales, cuentas y saldo total.
+- Depósitos y retiros.
+- Actualización de nombre y teléfono.
+- Cierre de sesión.
+
+### Administrador
+
+- Consulta de clientes, cuentas, empleados y cargos.
+- Creación, edición y eliminación de cuentas.
+- Activación o desactivación de cuentas.
+- Edición de datos de clientes.
+- Registro y eliminación de empleados.
+- Creación, edición y eliminación de cargos.
+- Actualización del salario y cargo de empleados cuando se modifica un empleo.
 
 ## Tecnologías
 
@@ -8,377 +30,185 @@ Aplicación web bancaria desarrollada con **Java, Spring Boot y Thymeleaf** como
 - Spring Boot
 - Spring MVC
 - Thymeleaf
+- Spring Security Crypto (`BCryptPasswordEncoder`)
 - Maven
 - HTML y CSS
 - Git y GitHub
-- Docker para despliegue
+- Docker/Render como opciones de despliegue
 
-## Objetivo
+## Arquitectura
 
-Crear una aplicación bancaria que permita representar operaciones básicas de un banco y separar las responsabilidades del cliente y del administrador.
-
-El proyecto aplica conceptos de:
-
-- Programación orientada a objetos.
-- Herencia.
-- Composición.
-- Encapsulamiento.
-- Separación entre modelo, controlador y repositorio.
-- Desarrollo web con Spring Boot.
-- Control de versiones con Git.
-
-## Estructura del proyecto
+El proyecto utiliza una organización sencilla por responsabilidades:
 
 ```text
-Gestion-Banco/
-├── pom.xml
-├── Dockerfile
-├── mvnw
-├── mvnw.cmd
-├── DOCUMENTACION.md
-├── README.md
-└── src/
-    ├── main/
-    │   ├── java/co/edu/unicordoba/Gestion_Banco/
-    │   │   ├── GestionBancoApplication.java
-    │   │   ├── config/
-    │   │   ├── controller/
-    │   │   ├── ejercicios/
-    │   │   ├── interfaces/
-    │   │   ├── model/
-    │   │   └── repository/
-    │   └── resources/
-    │       ├── application.properties
-    │       ├── static/
-    │       └── templates/
-    └── test/
+src/main/java/co/edu/unicordoba/Gestion_Banco/
+├── GestionBancoApplication.java
+├── config/
+│   └── SecurityConfig.java
+├── controller/
+│   └── BancoController.java
+├── interfaces/
+│   └── OperacionesBancarias.java
+├── model/
+│   ├── Persona.java
+│   ├── Cliente.java
+│   ├── Empleado.java
+│   ├── Empleo.java
+│   └── CuentaBancaria.java
+├── repository/
+│   ├── ClienteRepository.java
+│   ├── CuentaRepository.java
+│   ├── EmpleadoRepository.java
+│   └── EmpleoRepository.java
+└── ejercicios/
+    ├── herencia/
+    └── composicion/
 ```
 
-### Carpetas principales
-
-| Carpeta | Función |
-| `controller` | Gestiona las solicitudes del navegador. |
-| `model` | Contiene las clases Cliente, Persona, Empleado y CuentaBancaria. |
-| `repository` | Guarda y consulta datos en memoria. |
-| `config` | Contiene configuraciones de la aplicación. |
-| `ejercicios` | Contiene los ejercicios de herencia y composición. |
-| `interfaces` | Define contratos de comportamiento. |
-| `templates` | Contiene las páginas HTML de Thymeleaf. |
-| `static` | Contiene CSS y recursos estáticos. |
-
-## Funciones por rol
-
-### Cliente
-
-El cliente debe utilizar la aplicación para consultar su información y realizar las operaciones permitidas por la interfaz.
-
-Las funciones pueden incluir:
-
-- Consultar sus datos.
-- Consultar su cuenta.
-- Consultar el saldo.
-- Realizar operaciones bancarias disponibles.
-- Actualizar información permitida.
-- No acceder a funciones administrativas.
-
-### Administrador
-
-El administrador se encarga de la gestión interna del banco.
-
-Las funciones previstas incluyen:
-
-- Consultar clientes.
-- Consultar cuentas.
-- Gestionar datos de clientes.
-- Modificar o eliminar cuentas, cuando esté implementado.
-- Registrar empleados.
-- Consultar y administrar empleados.
-- Activar o desactivar cuentas, si está implementado.
-
-> Antes de la exposición, comprueba cada función desde el navegador y confirma que esté conectada correctamente con `BancoController.java`.
-
-## Plantillas HTML
-
-Las páginas se encuentran en:
-
-```text
-src/main/resources/templates/
-```
-
-| Archivo | Función |
-| `index.html` | Página inicial. |
-| `login.html` | Inicio de sesión. |
-| `registrar.html` | Registro. |
-| `panel.html` | Panel general. |
-| `Banco.html` | Interfaz bancaria. |
-| `clientes.html` | Consulta o gestión de clientes. |
-| `cuentas.html` | Consulta o gestión de cuentas. |
-| `crear-cuenta.html` | Funciones relacionadas con cuentas. |
-| `operaciones.html` | Operaciones bancarias. |
-| `resultado.html` | Resultados de acciones. |
-| `admin.html` | Panel administrativo. |
-
-Las rutas exactas dependen de los métodos definidos en `BancoController.java`.
+- **Model:** representa los datos y reglas básicas del dominio.
+- **Controller:** recibe las solicitudes HTTP y coordina la lógica de la aplicación.
+- **Repository:** administra listas en memoria.
+- **Templates:** páginas HTML procesadas con Thymeleaf.
+- **Static:** estilos CSS.
+- **Config:** configuración de Spring Security.
 
 ## Requisitos
 
-Instala:
+- JDK 21.
+- Git.
+- Maven Wrapper incluido (`mvnw` y `mvnw.cmd`).
+- IDE opcional: IntelliJ IDEA, Eclipse o Visual Studio Code.
 
-1. JDK 21 o una versión compatible.
-2. Git.
-3. IntelliJ IDEA, Eclipse o Visual Studio Code.
-4. Conexión a Internet para descargar dependencias.
-
-Verifica las instalaciones:
+Verificación:
 
 ```powershell
 java -version
 git --version
 ```
 
-## Ejecutar en Windows
+## Ejecución en Windows
 
-Abre PowerShell y entra en la carpeta que contiene `pom.xml`:
-
-```powershell
-cd "C:\Users\oh220\Desktop\Gestion-Banco"
-```
-
-Comprueba la carpeta:
-
-```powershell
-dir pom.xml
-```
-
-Ejecuta el proyecto:
+Desde la carpeta que contiene `pom.xml`:
 
 ```powershell
 .\mvnw.cmd clean spring-boot:run
 ```
 
-Cuando Spring Boot inicie correctamente, abre:
+Abrir en el navegador:
 
 ```text
 http://localhost:8080
 ```
 
-Para detener la aplicación, presiona:
+Para detener el servidor:
 
 ```text
 Ctrl + C
 ```
 
-## Guía de uso
+## Credenciales de administrador
 
-### 1. Página inicial
+El acceso administrativo está definido actualmente en el controlador:
 
-1. Abre `http://localhost:8080`.
-2. Comprueba que se muestre la página principal.
-3. Revisa que los enlaces funcionen.
-
-### 2. Registro
-
-1. Entra en la opción de registro.
-2. Completa los campos obligatorios.
-3. Comprueba que los datos sean válidos.
-4. Envía el formulario.
-5. Revisa el mensaje de resultado.
-
-### 3. Inicio de sesión
-
-1. Abre la página de login.
-2. Introduce las credenciales configuradas.
-3. Comprueba la redirección al panel correspondiente.
-4. Verifica que las opciones dependan del rol.
-
-### 4. Prueba como cliente
-
-1. Ingresa al panel del cliente.
-2. Consulta los datos personales.
-3. Consulta la cuenta y el saldo.
-4. Prueba las operaciones disponibles.
-5. Comprueba las validaciones.
-6. Verifica que no aparezcan funciones administrativas.
-
-### 5. Prueba como administrador
-
-1. Ingresa al panel administrativo.
-2. Consulta clientes y cuentas.
-3. Prueba las opciones de modificación.
-4. Registra un empleado si la opción está disponible.
-5. Comprueba las acciones de eliminación o bloqueo.
-6. Revisa los mensajes de éxito y error.
-
-## Pruebas antes de la presentación
-
-Realiza las siguientes pruebas:
-
-- Enviar formularios con campos vacíos.
-- Introducir datos inválidos.
-- Registrar datos válidos.
-- Intentar duplicar una cuenta, si existe esa validación.
-- Comprobar que el cliente no vea funciones de administrador.
-- Comprobar que el administrador pueda gestionar los recursos permitidos.
-- Reiniciar la aplicación y verificar qué datos permanecen.
-
-## Almacenamiento
-
-La aplicación utiliza listas en memoria en lugar de MySQL.
-
-Por esta razón:
-
-- No es necesario iniciar MySQL.
-- No se necesita una base de datos externa.
-- Los datos permanecen mientras la aplicación está activa.
-- Los datos pueden desaparecer al reiniciar.
-- No se debe utilizar esta versión para información bancaria real.
-
-Una versión real necesitaría una base de datos persistente, cifrado de contraseñas, autorización por roles, auditoría y controles de seguridad.
-
-## Conceptos de programación orientada a objetos
-
-### Herencia
-
-El proyecto contiene clases como:
-
-- `EmpleadoEjercicio`
-- `Asalariado`
-- `PorHoras`
-- `Comisionista`
-
-Las clases especializadas reutilizan atributos y comportamientos de una clase base.
-
-### Composición
-
-La clase `Formulario` contiene objetos internos de tipo `Campo`.
-
-El formulario crea y administra sus campos, representando una relación de composición.
-
-## Git y GitHub
-
-Consultar el estado:
-
-```powershell
-git status
+```text
+Correo: admin@banco.com
+Contraseña: Admin123*
 ```
 
-Añadir cambios:
+Estas credenciales son únicamente para demostración académica. Antes de un uso real deben trasladarse a una configuración segura y nunca quedar escritas directamente en el código.
 
-```powershell
-git add .
-```
+## Flujo de uso
 
-Crear un commit:
+1. Entrar a la página inicial.
+2. Registrar un cliente desde la opción de registro.
+3. Iniciar sesión con el correo y contraseña registrados.
+4. Consultar el panel, la cuenta y el saldo.
+5. Realizar un depósito o retiro.
+6. Actualizar los datos permitidos del perfil.
+7. Cerrar sesión.
+8. Para probar la administración, iniciar sesión con las credenciales de administrador.
 
-```powershell
-git commit -m "Actualización del proyecto"
-```
+## Reglas importantes del sistema
 
-Subir cambios:
+- El documento y el correo no pueden repetirse durante el registro.
+- Cada registro crea una cuenta de ahorros inicial.
+- El depósito requiere una cantidad positiva.
+- Un retiro solo se realiza si la cuenta está activa, la cantidad es positiva y existe saldo suficiente.
+- El cliente solo puede operar sobre sus propias cuentas.
+- Las rutas administrativas comprueban la existencia del atributo de sesión `admin`.
+- Los datos se guardan en listas en memoria, no en MySQL.
 
-```powershell
-git push origin main
-```
+## Rutas principales
+
+| Método | Ruta | Función |
+
+| GET | `/` | Página inicial |
+| GET | `/login` | Formulario de inicio de sesión |
+| GET | `/registro` | Formulario de registro |
+| POST | `/registro` | Registrar cliente y crear cuenta |
+| POST | `/login` | Validar acceso |
+| GET | `/panel` | Panel del cliente |
+| POST | `/operacion` | Depósito o retiro |
+| POST | `/perfil` | Actualizar nombre y teléfono |
+| GET | `/admin` | Panel administrativo |
+| GET | `/logout` | Cerrar sesión |
+
+También existen rutas POST administrativas para crear, editar y eliminar cuentas, clientes, empleados y empleos.
+
+## Pruebas recomendadas
+
+- Registro con correo repetido.
+- Registro con documento repetido.
+- Inicio de sesión con contraseña incorrecta.
+- Depósito con valor cero o negativo.
+- Retiro superior al saldo disponible.
+- Operación sobre una cuenta perteneciente a otro cliente.
+- Acceso a `/admin` sin sesión administrativa.
+- Desactivación de una cuenta y posterior intento de depósito.
+- Creación de un empleado con un cargo existente.
+- Eliminación de un cargo que está siendo utilizado.
+
+## Limitaciones actuales
+
+- Almacenamiento temporal en memoria.
+- No existe historial de movimientos.
+- La autenticación administrativa está codificada en `BancoController`.
+- No hay una base de datos persistente.
+
+## GitHub
 
 Repositorio:
 
-```text
-https://github.com/Samuel-H875/Gesti-n-Banco
-```
+[Repositorio en GitHub](https://github.com/Samuel-H875/Gesti-n-Banco)
 
-Comprobar el repositorio remoto:
+Comandos básicos:
 
 ```powershell
-git remote -v
-```
-
-Corregir la dirección remota:
-
-```powershell
-git remote set-url origin https://github.com/Samuel-H875/Gesti-n-Banco.git
+git status
+git add .
+git commit -m "Actualización de documentación"
+git push origin main
 ```
 
 ## Despliegue en Render
 
-1. Sube los cambios a GitHub.
-2. Entra en Render.
-3. Selecciona **New + → Web Service**.
-4. Conecta el repositorio `Gesti-n-Banco`.
-5. Selecciona la rama `main`.
-6. Selecciona el despliegue mediante Docker.
-7. Verifica que el proyecto tenga el `Dockerfile` en la raíz.
-8. Crea el servicio.
-9. Revisa los logs de construcción y ejecución.
-10. Abre la URL generada por Render.
+1. Subir el proyecto a GitHub.
+2. Crear un **Web Service** en Render.
+3. Conectar el repositorio y la rama `main`.
+4. Seleccionar Docker si el repositorio contiene un `Dockerfile`.
+5. Configurar el servicio para escuchar el puerto definido por la variable `PORT`.
+6. Revisar los logs de construcción y ejecución.
+7. Abrir la URL pública generada.
 
-La aplicación debe utilizar el puerto de la variable de entorno `PORT`.
+Si el proyecto conserva `server.port=8080`, conviene adaptar la configuración para que Render pueda asignar dinámicamente el puerto:
 
-## Problemas frecuentes
-
-### Repository not found
-
-Comprueba:
-
-```powershell
-git remote -v
+```properties
+server.port=${PORT:8080}
 ```
 
-Corrige:
+## Conceptos de POO incluidos
 
-```powershell
-git remote set-url origin https://github.com/Samuel-H875/Gesti-n-Banco.git
-```
-
-### Puerto 8080 ocupado
-
-Cierra la aplicación que está utilizando el puerto o cambia temporalmente la configuración del puerto.
-
-### Error relacionado con MySQL
-
-Comprueba que no existan configuraciones de conexión a MySQL en `application.properties` y que los repositorios no dependan de Spring Data JPA.
-
-### No qualifying bean
-
-Comprueba que el repositorio tenga:
-
-```java
-@Repository
-```
-
-También verifica que se encuentre dentro del paquete que Spring Boot escanea.
-
-### Página no encontrada
-
-Comprueba:
-
-1. Que la aplicación esté ejecutándose.
-2. Que la ruta exista en `BancoController.java`.
-3. Que la plantilla esté dentro de `templates`.
-4. Que el nombre del archivo coincida con el nombre utilizado en el controlador.
-
-## Qué explicar durante el parcial
-
-Durante la exposición puedes explicar:
-
-1. El objetivo de NovaBank.
-2. La estructura del proyecto.
-3. La función de `BancoController`.
-4. La función de las clases del modelo.
-5. La diferencia entre controlador, modelo y repositorio.
-6. La separación de roles.
-7. La aplicación de herencia.
-8. La aplicación de composición.
-9. Por qué se utiliza almacenamiento en memoria.
-10. Las limitaciones y mejoras futuras.
-
-## Mejoras futuras
-
-- Integrar MySQL o PostgreSQL.
-- Guardar datos de forma permanente.
-- Cifrar contraseñas.
-- Implementar autenticación y autorización completas.
-- Agregar historial de movimientos.
-- Implementar transferencias.
-- Añadir auditoría.
-- Crear pruebas unitarias.
-- Mejorar la seguridad y la accesibilidad.
+- **Herencia:** `Cliente` y `Empleado` heredan de `Persona`; las clases `Asalariado`, `PorHoras` y `Comisionista` heredan de `EmpleadoEjercicio`.
+- **Composición:** `Formulario` contiene objetos internos de tipo `Campo`.
+- **Encapsulamiento:** los atributos de las clases se manejan mediante métodos getter y setter.
+- **Abstracción:** `EmpleadoEjercicio` es una clase abstracta y `OperacionesBancarias` define un contrato de operaciones.
